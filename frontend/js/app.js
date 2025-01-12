@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.ordersByClient = ordersByClient || [];
 
                 this.renderAll();
+                this.renderClientSelect();
             } catch (error) {
                 console.error('Failed to load data:', error);
                 alert('Failed to load data. Please try again later.');
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <td>${client.inn || '-'}</td>
                                 <td>
                                     <button onclick="app.editClient(${client.id})">Edit</button>
-                                    <button class="delete" onclick="app.deleteClient(${client.id})">Delete</button>
+                                    <button onclick="app.deleteClient(${client.id})">Delete</button>
                                 </td>
                             </tr>
                         `).join('')}
@@ -310,6 +311,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return sum + (quantity * price);
             }, 0);
             document.getElementById('order-total').textContent = total.toFixed(2);
+        },
+
+        renderClientSelect() {
+            const select = document.querySelector('select[name="client_id"]');
+            select.innerHTML = `
+                <option value="">Select Client</option>
+                ${state.clients.map(c => `
+                    <option value="${c.id}">${c.name} (${c.inn || '-'})</option>
+                `).join('')}
+            `;
         }
     };
 
