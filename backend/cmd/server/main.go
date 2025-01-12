@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
+	"github.com/1C-Migration-Lab/OrderFlow/internal/api"
+	"github.com/1C-Migration-Lab/OrderFlow/internal/repository"
+	"github.com/1C-Migration-Lab/OrderFlow/internal/service"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"github.com/yourproject/internal/api"
-	"github.com/yourproject/internal/repository"
-	"github.com/yourproject/internal/service"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	defer db.Close()
 
 	// Initialize repositories
-	repos := repository.NewRepositories(db)
+	repos := repository.NewPostgresRepository(db)
 
 	// Initialize services
 	services := service.NewServices(repos)

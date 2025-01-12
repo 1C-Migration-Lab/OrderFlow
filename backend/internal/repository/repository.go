@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 
-	"github.com/your-project/backend/internal/domain/models"
+	"github.com/1C-Migration-Lab/OrderFlow/internal/domain/models"
 )
 
 var (
@@ -13,11 +14,27 @@ var (
 )
 
 // Repository определяет интерфейс для работы с данными
-type Repository interface {
+type Repositories interface {
 	ClientRepository
 	ProductRepository
 	OrderRepository
 	OrdersByClientRepository
+}
+
+type PostgresRepositories struct {
+	Client         ClientRepository
+	Product        ProductRepository
+	Order          OrderRepository
+	OrdersByClient OrdersByClientRepository
+}
+
+func NewPostgresRepository(db *sql.DB) *PostgresRepositories {
+	return &PostgresRepositories{
+		Client:         NewClientRepository(db),
+		Product:        NewProductRepository(db),
+		Order:          NewOrderRepository(db),
+		OrdersByClient: NewOrdersByClientRepository(db),
+	}
 }
 
 // ClientRepository определяет методы для работы с клиентами
@@ -55,13 +72,44 @@ type OrdersByClientRepository interface {
 	UpdateOrdersSum(ctx context.Context, clientID int64, amount float64) error
 }
 
-// PostgresRepository реализует Repository для PostgreSQL
-type PostgresRepository struct {
-	// db *gorm.DB
+// Структуры конкретных репозиториев
+type clientRepository struct {
+	db *sql.DB
 }
 
-// NewPostgresRepository создает новый экземпляр PostgresRepository
-func NewPostgresRepository( /* db *gorm.DB */ ) Repository {
-	// TODO: Реализовать все методы интерфейсов
-	panic("not implemented")
+type productRepository struct {
+	db *sql.DB
+}
+
+type orderRepository struct {
+	db *sql.DB
+}
+
+type ordersByClientRepository struct {
+	db *sql.DB
+}
+
+// Функции создания репозиториев
+func NewClientRepository(db *sql.DB) ClientRepository {
+	return &clientRepository{
+		db: db,
+	}
+}
+
+func NewProductRepository(db *sql.DB) ProductRepository {
+	return &productRepository{
+		db: db,
+	}
+}
+
+func NewOrderRepository(db *sql.DB) OrderRepository {
+	return &orderRepository{
+		db: db,
+	}
+}
+
+func NewOrdersByClientRepository(db *sql.DB) OrdersByClientRepository {
+	return &ordersByClientRepository{
+		db: db,
+	}
 }
