@@ -14,11 +14,11 @@ var (
 )
 
 // Repository определяет интерфейс для работы с данными
-type Repositories interface {
-	ClientRepository
-	ProductRepository
-	OrderRepository
-	OrdersByClientRepository
+type Repositories struct {
+	Client         ClientRepository
+	Product        ProductRepository
+	Order          OrderRepository
+	OrdersByClient OrdersByClientRepository
 }
 
 type PostgresRepositories struct {
@@ -39,37 +39,37 @@ func NewPostgresRepository(db *sql.DB) *PostgresRepositories {
 
 // ClientRepository определяет методы для работы с клиентами
 type ClientRepository interface {
-	CreateClient(ctx context.Context, client *models.Client) error
-	GetClient(ctx context.Context, id int64) (*models.Client, error)
-	UpdateClient(ctx context.Context, client *models.Client) error
-	DeleteClient(ctx context.Context, id int64) error
-	ListClients(ctx context.Context) ([]models.Client, error)
+	Create(ctx context.Context, client *models.Client) error
+	GetByID(ctx context.Context, id int64) (*models.Client, error)
+	GetAll(ctx context.Context) ([]models.Client, error)
+	Update(ctx context.Context, client *models.Client) error
+	Delete(ctx context.Context, id int64) error
 }
 
 // ProductRepository определяет методы для работы с товарами
 type ProductRepository interface {
-	CreateProduct(ctx context.Context, product *models.Product) error
-	GetProduct(ctx context.Context, id int64) (*models.Product, error)
-	UpdateProduct(ctx context.Context, product *models.Product) error
-	DeleteProduct(ctx context.Context, id int64) error
-	ListProducts(ctx context.Context) ([]models.Product, error)
+	Create(ctx context.Context, product *models.Product) error
+	GetByID(ctx context.Context, id int64) (*models.Product, error)
+	GetAll(ctx context.Context) ([]models.Product, error)
+	Update(ctx context.Context, product *models.Product) error
+	Delete(ctx context.Context, id int64) error
 }
 
 // OrderRepository определяет методы для работы с заказами
 type OrderRepository interface {
-	CreateOrder(ctx context.Context, order *models.Order, items []models.OrderItem) error
-	GetOrder(ctx context.Context, id int64) (*models.Order, error)
-	UpdateOrder(ctx context.Context, order *models.Order, items []models.OrderItem) error
-	DeleteOrder(ctx context.Context, id int64) error
-	ListOrders(ctx context.Context) ([]models.Order, error)
-	ConfirmOrder(ctx context.Context, id int64) error
+	Create(ctx context.Context, order *models.Order, items []models.OrderItem) error
+	GetByID(ctx context.Context, id int64) (*models.Order, error)
+	GetAll(ctx context.Context) ([]models.Order, error)
+	Update(ctx context.Context, order *models.Order, items []models.OrderItem) error
+	Delete(ctx context.Context, id int64) error
+	Confirm(ctx context.Context, id int64) error
 }
 
 // OrdersByClientRepository определяет методы для работы с агрегированными суммами
 type OrdersByClientRepository interface {
-	GetOrdersByClient(ctx context.Context, clientID int64) (*models.OrdersByClient, error)
-	ListOrdersByClient(ctx context.Context) ([]models.OrdersByClient, error)
-	UpdateOrdersSum(ctx context.Context, clientID int64, amount float64) error
+	GetByID(ctx context.Context, clientID int64) (*models.OrdersByClient, error)
+	GetAll(ctx context.Context) ([]models.OrdersByClient, error)
+	UpdateSum(ctx context.Context, clientID int64, amount float64) error
 }
 
 // Структуры конкретных репозиториев
