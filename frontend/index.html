@@ -8,7 +8,84 @@
 </head>
 <body>
     <div id="app">
-        <!-- Application content will be here -->
+        <header>
+            <h1>Order Management System</h1>
+            <nav>
+                <button onclick="showSection('clients')">Clients</button>
+                <button onclick="showSection('products')">Products</button>
+                <button onclick="showSection('orders')">Orders</button>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Clients Section -->
+            <section id="clients" class="section">
+                <h2>Clients</h2>
+                <button onclick="showModal('client-modal')">Add Client</button>
+                <div id="clients-list"></div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="section">
+                <h2>Products</h2>
+                <button onclick="showModal('product-modal')">Add Product</button>
+                <div id="products-list"></div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="section">
+                <h2>Orders</h2>
+                <button onclick="showModal('order-modal')">Create Order</button>
+                <div id="orders-list"></div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="client-modal" class="modal">
+            <div class="modal-content">
+                <h3>Client</h3>
+                <form id="client-form">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="text" name="inn" placeholder="INN">
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="hideModal('client-modal')">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="product-modal" class="modal">
+            <div class="modal-content">
+                <h3>Product</h3>
+                <form id="product-form">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="text" name="unit" placeholder="Unit" required>
+                    <button type="submit">Save</button>
+                    <button type="button" onclick="hideModal('product-modal')">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="order-modal" class="modal">
+            <div class="modal-content">
+                <h3>Order</h3>
+                <form id="order-form">
+                    <select name="client_id" required>
+                        <option value="">Select Client</option>
+                    </select>
+                    <input type="text" name="number" placeholder="Order Number" required>
+                    
+                    <div id="order-items">
+                        <!-- Order items will be added here -->
+                    </div>
+                    
+                    <button type="button" onclick="addOrderItem()">Add Item</button>
+                    <div class="total">Total: <span id="order-total">0.00</span></div>
+                    
+                    <button type="submit">Save Order</button>
+                    <button type="button" onclick="hideModal('order-modal')">Cancel</button>
+                </form>
+            </div>
+        </div>
     </div>
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>

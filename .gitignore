@@ -1,0 +1,36 @@
+# IDE
+.idea/
+.vscode/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/vendor/
+
+# Environment
+.env
+*.env.local
+
+# Frontend
+node_modules/
+/dist/
+/build/
+.DS_Store
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp

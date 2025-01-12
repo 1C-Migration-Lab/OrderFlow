@@ -44,6 +44,7 @@ type ClientRepository interface {
 	GetAll(ctx context.Context) ([]models.Client, error)
 	Update(ctx context.Context, client *models.Client) error
 	Delete(ctx context.Context, id int64) error
+	GetClientOrders(ctx context.Context, id int64) ([]models.Order, error)
 }
 
 // ProductRepository определяет методы для работы с товарами
@@ -53,6 +54,7 @@ type ProductRepository interface {
 	GetAll(ctx context.Context) ([]models.Product, error)
 	Update(ctx context.Context, product *models.Product) error
 	Delete(ctx context.Context, id int64) error
+	GetProductOrderItems(ctx context.Context, id int64) ([]models.OrderItem, error)
 }
 
 // OrderRepository определяет методы для работы с заказами

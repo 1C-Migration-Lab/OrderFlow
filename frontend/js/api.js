@@ -1,23 +1,124 @@
-// API endpoints configuration
-const API_BASE_URL = 'http://localhost:8080/api';
+// API client for interacting with the backend
+const API = {
+    baseUrl: 'http://localhost:8080/api',
 
-// API client implementation
-class ApiClient {
-    async get(endpoint) {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`);
-        return response.json();
-    }
+    // Generic request method
+    async request(endpoint, options = {}) {
+        try {
+            const response = await fetch(`${this.baseUrl}${endpoint}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers,
+                },
+            });
 
-    async post(endpoint, data) {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'API request failed');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('API request failed:', error);
+            throw error;
+        }
+    },
+
+    // Clients
+    async getClients() {
+        return this.request('/clients');
+    },
+
+    async createClient(client) {
+        return this.request('/clients', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
+            body: JSON.stringify(client),
         });
-        return response.json();
-    }
-}
+    },
 
-const api = new ApiClient();
+    async updateClient(id, client) {
+        return this.request(`/clients/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(client),
+        });
+    },
+
+    async deleteClient(id) {
+        return this.request(`/clients/${id}`, {
+            method: 'DELETE',
+        });
+    },
+
+    // Products
+    async getProducts() {
+        return this.request('/products');
+    },
+
+    async createProduct(product) {
+        return this.request('/products', {
+            method: 'POST',
+            body: JSON.stringify(product),
+        });
+    },
+
+    async updateProduct(id, product) {
+        return this.request(`/products/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(product),
+        });
+    },
+
+    async deleteProduct(id) {
+        return this.request(`/products/${id}`, {
+            method: 'DELETE',
+        });
+    },
+
+    // Orders
+    async getOrders() {
+        return this.request('/orders');
+    },
+
+    async createOrder(order) {
+        return this.request('/orders', {
+            method: 'POST',
+            body: JSON.stringify(order),
+        });
+    },
+
+    async updateOrder(id, order) {
+        return this.request(`/orders/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(order),
+        });
+    },
+
+    async deleteOrder(id) {
+        return this.request(`/orders/${id}`, {
+            method: 'DELETE',
+        });
+    },
+
+    async confirmOrder(id) {
+        return this.request(`/orders/${id}/confirm`, {
+            method: 'POST',
+        });
+    },
+
+    // Orders by client
+    async getOrdersByClient() {
+        return this.request('/orders-by-client');
+    },
+
+    renderAll() {
+        this.showLoading();
+        try {
+            this.renderClients();
+            this.renderProducts();
+            this.renderOrders();
+        } finally {
+            this.hideLoading();
+        }
+    }
+};

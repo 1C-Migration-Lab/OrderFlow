@@ -3,16 +3,26 @@ package main
 import (
 	"log"
 
+	"fmt"
+	"os"
+
 	"github.com/1C-Migration-Lab/OrderFlow/internal/api"
 	"github.com/1C-Migration-Lab/OrderFlow/internal/repository"
 	"github.com/1C-Migration-Lab/OrderFlow/internal/service"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	// Initialize DB connection
-	db, err := repository.NewDB("postgres://username:password@localhost:5432/ordersdb?sslmode=disable")
+	// Загрузка .env файла
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	dbPass := os.Getenv("DB_PASSWORD")
+	dbURL := fmt.Sprintf("postgres://postgres.hhdqekkbomdofkinrajy:%s@aws-0-eu-central-1.pooler.supabase.com:6543/postgres", dbPass)
+	db, err := repository.NewDB(dbURL)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

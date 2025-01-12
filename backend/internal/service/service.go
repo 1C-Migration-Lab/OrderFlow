@@ -28,6 +28,7 @@ type ClientService interface {
 	GetAll(ctx context.Context) ([]models.Client, error)
 	Update(ctx context.Context, client *models.Client) error
 	Delete(ctx context.Context, id int64) error
+	GetClientOrders(ctx context.Context, id int64) ([]models.Order, error)
 }
 
 type ProductService interface {
@@ -36,6 +37,7 @@ type ProductService interface {
 	GetAll(ctx context.Context) ([]models.Product, error)
 	Update(ctx context.Context, product *models.Product) error
 	Delete(ctx context.Context, id int64) error
+	GetProductOrderItems(ctx context.Context, id int64) ([]models.OrderItem, error)
 }
 
 type OrderService interface {
@@ -111,6 +113,19 @@ func (s *clientService) Delete(ctx context.Context, id int64) error {
 	return s.repo.Delete(ctx, id)
 }
 
+func (s *clientService) GetClientOrders(ctx context.Context, id int64) ([]models.Order, error) {
+	// Проверяем существование клиента
+	client, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if client == nil {
+		return nil, ErrNotFound
+	}
+
+	return s.repo.GetClientOrders(ctx, id)
+}
+
 // ProductService implementation
 type productService struct {
 	repo repository.ProductRepository
@@ -152,6 +167,19 @@ func (s *productService) Delete(ctx context.Context, id int64) error {
 		return ErrNotFound
 	}
 	return s.repo.Delete(ctx, id)
+}
+
+func (s *productService) GetProductOrderItems(ctx context.Context, id int64) ([]models.OrderItem, error) {
+	// Проверяем существование товара
+	product, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if product == nil {
+		return nil, ErrNotFound
+	}
+
+	return s.repo.GetProductOrderItems(ctx, id)
 }
 
 // OrderService implementation
