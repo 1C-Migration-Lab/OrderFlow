@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Diagram</title>
+    <script type="module">
+        // Подключение Mermaid.js через CDN
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>Диаграмма Mermaid</h1>
+    <!-- Вставьте ваш Mermaid-код в этот div -->
+    <div class="mermaid">
+%%{init: { 'sequence': {'useMaxWidth': false} } }%%
+flowchart TB
+    subgraph Pool["Процесс работы с заказами"]
+        direction TB
+        Start((Старт)) --> Need[Потребность в регистрации заказа]
+        Need --> OpenForm[Открытие формы ЗаказПокупателя]
+        
+        OpenForm --> CheckClient{Клиент есть в базе?}
+        CheckClient -->|Нет| CreateClient[Создание нового контрагента]
+        CreateClient --> FillOrder
+        CheckClient -->|Да| FillOrder[Заполнение полей заказа]
+        
+        FillOrder --> FillTable[Заполнение табличной части]
+        FillTable --> CalcTotal[Расчет суммы заказа]
+        CalcTotal --> ValidateData[Проверка корректности данных]
+        
+        ValidateData --> IsValid{Данные корректны?}
+        IsValid -->|Нет| FillOrder
+        IsValid -->|Да| SaveOrder[Сохранение заказа]
+        
+        SaveOrder --> NeedPosting{Нужно провести?}
+        NeedPosting -->|Нет| End
+        NeedPosting -->|Да| PostOrder[Проведение заказа]
+        
+        PostOrder --> ValidatePosting{Проверка возможности проведения}
+        ValidatePosting -->|Ошибка| ShowError[Показ ошибки]
+        ShowError --> SaveOrder
+        
+        ValidatePosting -->|Успех| CreateMovements[Создание движений в регистре]
+        CreateMovements --> End((Конец))
+    end
+
+    subgraph References["Справочники"]
+        direction TB
+        Client[(Контрагенты)]
+        Items[(Номенклатура)]
+        Register[(Регистр заказов)]
+    end
+    
+    CreateClient -.-> Client
+    FillOrder -.-> Client
+    FillTable -.-> Items
+    CreateMovements -.-> Register	
+    </div>
+</body>
+</html>

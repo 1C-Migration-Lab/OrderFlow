@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Diagram</title>
+    <script type="module">
+        // Подключение Mermaid.js через CDN
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>Диаграмма Mermaid</h1>
+    <!-- Вставьте ваш Mermaid-код в этот div -->
+    <div class="mermaid">
+---
+title: Процесс работы с заказами
+---
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#fff', 'lineColor': '#666' }}}%%
+stateDiagram-v2
+    [*] --> StartEvent
+    state "Отдел продаж" as SalesDept {
+        state "Менеджер" as Manager {
+            StartEvent: Потребность в заказе
+            state "Работа с заказом" as OrderProcess {
+                OpenForm: Открытие формы заказа
+                CheckClient: Проверка наличия клиента
+                FillOrder: Заполнение данных заказа
+                ValidateData: Проверка данных
+                SaveOrder: Сохранение заказа
+                Decision: Проведение?
+            }
+            
+            state "Создание справочников" as ReferenceProcess {
+                CreateClient: Создание контрагента
+                FillClientData: Заполнение данных контрагента
+            }
+        }
+        
+        state "Система" as System {
+            state "Обработка заказа" as OrderHandling {
+                CalcTotal: Расчет итогов
+                ValidateAll: Проверка возможности проведения
+                CreateMovements: Создание движений
+            }
+            
+            state "Справочники" as References {
+                Clients: Контрагенты
+                Items: Номенклатура
+                OrdersReg: Регистр заказов
+            }
+        }
+    }
+    
+    StartEvent --> OpenForm
+    OpenForm --> CheckClient
+    CheckClient --> CreateClient: Нет клиента
+    CreateClient --> FillClientData
+    FillClientData --> Clients
+    CheckClient --> FillOrder: Клиент есть
+    FillOrder --> ValidateData
+    ValidateData --> SaveOrder: Данные верны
+    ValidateData --> FillOrder: Ошибки
+    SaveOrder --> Decision
+    Decision --> ValidateAll: Провести
+    Decision --> [*]: Не проводить
+    ValidateAll --> CreateMovements: Успех
+    ValidateAll --> SaveOrder: Ошибка
+    CreateMovements --> OrdersReg
+    CreateMovements --> [*]
+    
+    FillOrder --> Items
+    FillOrder --> Clients    </div>
+</body>
+</html>

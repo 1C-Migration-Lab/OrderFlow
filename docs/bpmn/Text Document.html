@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Диаграмма классов</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<form id="customerOrder" class="form">
+    <div class="form-group">
+        <label for="number">Номер</label>
+        <input type="text" id="number" name="number" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="date">Дата</label>
+        <input type="datetime-local" id="date" name="date" class="form-control">
+    </div>
+    
+    <table id="items" class="table">
+        <thead>
+            <tr>
+                <th>Номенклатура</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Динамические строки -->
+        </tbody>
+    </table>
+</form>
+</body>
+</html> 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({ 
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Диаграмма Mermaid</h1>
+    <!-- Вставьте ваш Mermaid-код в этот div -->
+    <div class="mermaid">
+        %%{init: {'theme': 'base'}}%%
+graph LR
+%% События
+StartEvent((Start))
+EndEvent1((End))
+EndEvent2((End))
+
+%% Задачи
+Task1[Открыть форму<br/>создания заказа]
+Task2[Создать<br/>контрагента]
+Task3[Выбрать контрагента,<br/>заполнить табличную<br/>часть]
+Task4[/Рассчитать<br/>сумму/]
+Task5[Подтвердить<br/>заказ]
+Task6[/Проведение<br/>заказа/]
+
+%% Шлюзы
+Gateway1{Нужно создать<br/>нового клиента?}
+Gateway2{Провести<br/>документ?}
+
+%% Потоки
+StartEvent --> Task1
+Task1 --> Gateway1
+Gateway1 -->|Да| Task2
+Gateway1 -->|Нет| Task3
+Task2 --> Task3
+Task3 --> Task4
+Task4 --> Task5
+Task5 --> Gateway2
+Gateway2 -->|Нет| EndEvent1
+Gateway2 -->|Да| Task6
+Task6 --> EndEvent2
+
+%% Стили
+classDef default fill:#fff,stroke:#333,stroke-width:2px
+classDef start fill:#bfb,stroke:#333,stroke-width:4px
+classDef endEvent fill:#fbb,stroke:#333,stroke-width:4px
+classDef gateway fill:#ffd,stroke:#333,stroke-width:2px
+classDef system fill:#ddf,stroke:#333,stroke-width:2px
+
+class StartEvent start
+class EndEvent1,EndEvent2 endEvent
+class Gateway1,Gateway2 gateway
+class Task4,Task6 system
+    </div>
+</body>
+</html>

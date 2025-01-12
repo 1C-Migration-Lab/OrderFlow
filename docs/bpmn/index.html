@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Диаграмма классов</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="mermaid">
+        classDiagram
+            class Контрагент {
+                +String ID_Контрагента
+                +String Наименование
+                +String ИНН
+            }
+            
+            class Номенклатура {
+                +String ID_Номенклатуры
+                +String Наименование
+                +String ЕдиницаИзмерения
+            }
+            
+            class Заказ {
+                +String ID_Заказа
+                +String Номер
+                +DateTime Дата
+                +Number СуммаДокумента
+                +Boolean Проведен
+                +расчитатьСумму()
+                +провестиДокумент()
+            }
+            
+            class ПозицияЗаказа {
+                +String ID_Позиции
+                +Number Количество
+                +Number Цена
+                +Number СуммаСтроки
+                +расчитатьСуммуСтроки()
+            }
+
+            Заказ "1" *-- "many" ПозицияЗаказа : содержит
+            Заказ "many" --> "1" Контрагент : принадлежит
+            ПозицияЗаказа "many" --> "1" Номенклатура : содержит
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            // Добавляем специальные настройки для поддержки кириллицы
+            fontFamily: 'Arial, sans-serif'
+        });
+    </script>
+</body>
+</html> 
