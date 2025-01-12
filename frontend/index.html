@@ -11,9 +11,9 @@
         <header>
             <h1>Order Management System</h1>
             <nav>
-                <button onclick="showSection('clients')">Clients</button>
-                <button onclick="showSection('products')">Products</button>
-                <button onclick="showSection('orders')">Orders</button>
+                <button onclick="app.showSection('clients')">Clients</button>
+                <button onclick="app.showSection('products')">Products</button>
+                <button onclick="app.showSection('orders')">Orders</button>
             </nav>
         </header>
 
@@ -21,21 +21,21 @@
             <!-- Clients Section -->
             <section id="clients" class="section">
                 <h2>Clients</h2>
-                <button onclick="showModal('client-modal')">Add Client</button>
+                <button onclick="app.showModal('client-modal')">Add Client</button>
                 <div id="clients-list"></div>
             </section>
 
             <!-- Products Section -->
             <section id="products" class="section">
                 <h2>Products</h2>
-                <button onclick="showModal('product-modal')">Add Product</button>
+                <button onclick="app.showModal('product-modal')">Add Product</button>
                 <div id="products-list"></div>
             </section>
 
             <!-- Orders Section -->
             <section id="orders" class="section">
                 <h2>Orders</h2>
-                <button onclick="showModal('order-modal')">Create Order</button>
+                <button onclick="app.showModal('order-modal')">Create Order</button>
                 <div id="orders-list"></div>
             </section>
         </main>
@@ -48,7 +48,7 @@
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="inn" placeholder="INN">
                     <button type="submit">Save</button>
-                    <button type="button" onclick="hideModal('client-modal')">Cancel</button>
+                    <button type="button" onclick="app.hideModal('client-modal')">Cancel</button>
                 </form>
             </div>
         </div>
@@ -60,7 +60,7 @@
                     <input type="text" name="name" placeholder="Name" required>
                     <input type="text" name="unit" placeholder="Unit" required>
                     <button type="submit">Save</button>
-                    <button type="button" onclick="hideModal('product-modal')">Cancel</button>
+                    <button type="button" onclick="app.hideModal('product-modal')">Cancel</button>
                 </form>
             </div>
         </div>
@@ -78,11 +78,11 @@
                         <!-- Order items will be added here -->
                     </div>
                     
-                    <button type="button" onclick="addOrderItem()">Add Item</button>
+                    <button type="button" onclick="app.addOrderItem()">Add Item</button>
                     <div class="total">Total: <span id="order-total">0.00</span></div>
                     
                     <button type="submit">Save Order</button>
-                    <button type="button" onclick="hideModal('order-modal')">Cancel</button>
+                    <button type="button" onclick="app.hideModal('order-modal')">Cancel</button>
                 </form>
             </div>
         </div>

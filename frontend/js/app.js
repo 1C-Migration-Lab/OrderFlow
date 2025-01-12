@@ -26,10 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     API.getOrdersByClient()
                 ]);
 
-                state.clients = clients;
-                state.products = products;
-                state.orders = orders;
-                state.ordersByClient = ordersByClient;
+                state.clients = clients || [];
+                state.products = products || [];
+                state.orders = orders || [];
+                state.ordersByClient = ordersByClient || [];
 
                 this.renderAll();
             } catch (error) {

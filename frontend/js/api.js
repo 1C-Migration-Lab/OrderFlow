@@ -14,11 +14,16 @@ const API = {
             });
 
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || 'API request failed');
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.error || `HTTP error! status: ${response.status}`);
             }
 
-            return await response.json();
+            // Для DELETE запросов может не быть тела ответа
+            if (options.method === 'DELETE') {
+                return null;
+            }
+
+            return await response.json().catch(() => null);
         } catch (error) {
             console.error('API request failed:', error);
             throw error;
